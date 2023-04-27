@@ -28,25 +28,27 @@ func (b *ChatBot) Run() error {
 	}
 
 	bot.Debug = true
+	log.Printf("Authorized on account %s", bot.Self.UserName)
 
-	updates, err := bot.GetUpdatesChan(telegramApi.UpdateConfig{})
+	u := telegramApi.NewUpdate(0)
+	u.Timeout = 60
+
+	updates, err := bot.GetUpdatesChan(u)
 	if err != nil {
 		log.Panic(err)
 	}
 
 	// 다른 스레드로 돌아야 하나?
 	for update := range updates {
-		if update.Message == nil {
-			continue
+		if update.Message != nil {
+			log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+
+			// update.Message.Text를 가지고 openai에 요청을 보내고, 그 결과를 다시 돌려준다.
+			aiResponse := openai.Call(b.OpenAIToken, update.Message.Text)
+
+			msg := telegramApi.NewMessage(update.Message.Chat.ID, aiResponse)
+			bot.Send(msg)
 		}
-
-		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-
-		// update.Message.Text를 가지고 openai에 요청을 보내고, 그 결과를 다시 돌려준다.
-		aiResponse := openai.Call(b.OpenAIToken, update.Message.Text)
-
-		msg := telegramApi.NewMessage(update.Message.Chat.ID, aiResponse)
-		bot.Send(msg)
 	}
 	return nil
 }

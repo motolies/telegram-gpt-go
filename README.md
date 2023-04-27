@@ -41,3 +41,12 @@ docker run -d --restart=unless-stopped \
     -e OPENAI_API_KEY=ABCDEFGHIJKLMNOPQRSTUVWXYZ \
     telegram-gpt-bot
 ```
+
+---
+
+## buildx
+
+### multi-arch build
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 --no-cache --push -t telegram-gpt-bot .
+```
