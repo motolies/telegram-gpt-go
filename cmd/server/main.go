@@ -27,6 +27,9 @@ func main() {
 		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
 
 		msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
-		bot.Send(msg)
+		_, err := bot.Send(msg)
+		if err != nil {
+			return
+		}
 	}
 }
