@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	bot, err := telegram.InitializeServer(os.Getenv("TELEGRAM_BOT_TOKEN"), "b")
+	bot, err := telegram.InitializeServer(os.Getenv("TELEGRAM_BOT_TOKEN"), os.Getenv("OPENAI_API_KEY"))
 	if err != nil {
 		panic(err)
 	}

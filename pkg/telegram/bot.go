@@ -2,6 +2,7 @@ package telegram
 
 import (
 	telegramApi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/motolies/telegram-gpt-go/pkg/openai"
 	"log"
 )
 
@@ -42,8 +43,9 @@ func (b *ChatBot) Run() error {
 		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
 
 		// update.Message.Text를 가지고 openai에 요청을 보내고, 그 결과를 다시 돌려준다.
+		aiResponse := openai.Call(b.OpenAIToken, update.Message.Text)
 
-		msg := telegramApi.NewMessage(update.Message.Chat.ID, update.Message.Text)
+		msg := telegramApi.NewMessage(update.Message.Chat.ID, aiResponse)
 		bot.Send(msg)
 	}
 	return nil

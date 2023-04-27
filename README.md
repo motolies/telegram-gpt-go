@@ -17,8 +17,9 @@ go get github.com/go-telegram-bot-api/telegram-bot-api
 ## 사용법
 
 ```bash
-# 환경변수에 텔레그램 봇 토큰을 등록
+# 환경변수에 텔레그램 봇 토큰 및 GPT-3 API 키를 등록
 export TELEGRAM_BOT_TOKEN=123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ
+export OPENAI_API_KEY=ABCDEFGHIJKLMNOPQRSTUVWXYZ
 
 # 실행
 
