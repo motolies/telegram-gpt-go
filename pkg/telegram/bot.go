@@ -52,8 +52,11 @@ func (b *ChatBot) Run() error {
 			}
 
 			msg := telegramApi.NewMessage(update.Message.Chat.ID, aiResponse)
-			bot.Send(msg)
+			_, err = bot.Send(msg)
+			if err != nil {
+				log.Printf("Error sending message: %v", err)
+			}
 		}
 	}
-	return nil
+	return err
 }
